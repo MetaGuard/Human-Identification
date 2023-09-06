@@ -6,12 +6,12 @@ from lib.parse import handle_bsor
 from tqdm import tqdm, trange
 
 # Configuration options
-MIN_REPLAYS = 10    # Minimum number of replays per user for inclusion
-MAX_REPLAYS = 99    # Maximum number of replays per user for inclusion
+MIN_REPLAYS = 250   # Minimum number of replays per user for inclusion
+MAX_REPLAYS = 999   # Maximum number of replays per user for inclusion
 NUM_OPTIONS = 5     # Total number of options to choose from
-SEARCH_SIZE = 49    # Maximum number of maps to search for comparison
+SEARCH_SIZE = 99    # Maximum number of maps to search for comparison
 TEST_NUMBER = 10    # Total number of tests to give participants
-SCORE_DELTA = 0.02  # Maximum percentage score difference of replays
+SCORE_DELTA = 0.01  # Maximum percentage score difference of replays
 
 # Set fixed random seed
 np.random.seed(0)
@@ -112,6 +112,8 @@ def get_challenge(i):
             replay = np.random.choice(maps[target_map]).strip()
             if (replay == target_replay): continue
             if (replay in replay_pool): continue
+            user = replay.split('-')[0]
+            if (user not in user_names): continue
             replay_pool.append(replay)
             try:
                 replay_score = get_replay(i + '/' + str(labels[j]), replay)
